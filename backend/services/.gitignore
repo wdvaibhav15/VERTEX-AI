@@ -1,2 +1,4 @@
 mode_modules
 .env
+backend/services/auth/serviceAccountKey.json
+**/serviceAccountKey.json
