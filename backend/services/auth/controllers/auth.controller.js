@@ -7,6 +7,7 @@ export const login = async(req, res) => {
         const { token } =  req.body;
         const decoadedToken = await getAuth(app).verifyIdToken(token);
         let user = await User.findOne({firebaseUid:decoadedToken.uid});
+        // if user is not exist create a new one
 
         if(!user){
             // create a new user
