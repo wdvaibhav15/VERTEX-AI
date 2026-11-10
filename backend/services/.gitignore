@@ -5,6 +5,7 @@ node_modules/
 .env
 .env.*
 !.env.example
+serviceAccountKey.json
 
 # Firebase Admin credentials
 backend/services/auth/serviceAccountKey.json
