@@ -25,7 +25,7 @@ export const login = async(req, res) => {
         const sessionId = crypto.randomUUID();
         await redis.set(`session-${sessionId}`, JSON.stringify({
             name:user.name,
-            userId:user._id,
+            _id:user._id,
             email:user.email,
             avatar:user.avatar
         }),"EX",60*60*24*7); // expire in 7 days

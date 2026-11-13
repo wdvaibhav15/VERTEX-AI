@@ -4,6 +4,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import proxy from "express-http-proxy";
+import protect from "./middleware/isLogin.js";
+import { getCurrectUser } from "./controllers/userController.js";
 
 dotenv.config();
 
@@ -25,6 +27,8 @@ app.use(morgan("dev"));
 
 // Auth microservice
 app.use( "/api/auth", proxy(process.env.AUTH_SERVICE_URL || "http://localhost:3001"));
+app.get("/api/me", protect, getCurrectUser)
+
 
 app.get("/", (req, res) => {
   return res.status(200).json({

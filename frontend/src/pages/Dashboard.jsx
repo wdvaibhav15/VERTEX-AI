@@ -3,9 +3,14 @@ import { FcGoogle } from "react-icons/fc";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase";
 import { login } from "../apiCalls/LoginApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../redux/userSlice.js";
 
 const Dashboard = () => {
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const {userData} = useSelector((state) => state.user);
+
 
     const handleGoogleLogin = async () => {
     try {
@@ -17,13 +22,15 @@ const Dashboard = () => {
       // Send token to backend
       const data = await login(token);
       setLoading(false);
+      dispatch(setUserData(data));
       console.log("Backend Response:", data);
     } catch (error) {
       console.error("Google Login Error:", error);
     }
   };
 
-  return (
+  if(!userData){
+    return (
     <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-slate-50 px-4 transition-colors duration-300 dark:bg-[#07070c]">
       {/* Background Glow */}
       <div className="pointer-events-none absolute -top-32 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-white/[0.04] blur-[120px] dark:black" />
@@ -53,6 +60,13 @@ const Dashboard = () => {
       </div>
     </div>
   );
+  }
+
+  return (
+    <div></div>
+  )
+
+  
 };
 
 export default Dashboard;
