@@ -43,7 +43,7 @@ const Dashboard = () => {
         <button 
         onClick={handleGoogleLogin}
         disabled={loading}
-        className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+        className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/2 px-4 py-3 text-sm font-medium text-white transition hover:bg-white/10 cursor-pointer">
           <FcGoogle size={20} />
           {loading ? "Signing in..." : "Sign in with Google"}
         </button>
