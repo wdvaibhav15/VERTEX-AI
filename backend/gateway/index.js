@@ -28,7 +28,7 @@ app.use(morgan("dev"));
 // Auth microservice
 app.use( "/api/auth", proxy(process.env.AUTH_SERVICE_URL || "http://localhost:3001"));
 app.get("/api/me", protect, getCurrectUser)
-
+app.use( "/api/project", protect, proxyWithHeader(process.env.PROJECT_SERVICE_URL || "http://localhost:3002"));
 
 app.get("/", (req, res) => {
   return res.status(200).json({
