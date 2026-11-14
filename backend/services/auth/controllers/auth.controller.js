@@ -46,15 +46,42 @@ export const login = async(req, res) => {
 
 
 // logout user
-export const logout = async(req, res) => {
+export const logout = async (req, res) => {
     try {
-        // deldete session
-        const sessionId = req.cookies.session;
+        // Get session ID from cookie
+        const sessionId = req.cookies?.session;
+
+        if (!sessionId) {
+            res.clearCookie("session", { path: "/" });
+
+            return res.status(200).json({
+                success: true,
+                message: "Already logged out"
+            });
+        }
+
+        // Delete session from Redis
         await redis.del(`session-${sessionId}`);
-        // delete cookie
-        res.clearCookie("session");
-        return res.status(200).json({message:"logout successfully"})
+
+        // Clear session cookie
+        res.clearCookie("session", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/"
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Logout successful"
+        });
+
     } catch (error) {
-        return res.status(500).json({message:"something went wrong",error})
+        console.error("Logout Error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong during logout"
+        });
     }
-}
+};
