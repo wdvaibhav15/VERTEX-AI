@@ -1,6 +1,6 @@
 
-import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
+import React, { useEffect, useState } from "react";
+import { FcElectricalSensor, FcGoogle } from "react-icons/fc";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase";
 import { login } from "../apiCalls/LoginApi";
@@ -9,6 +9,11 @@ import { setUserData } from "../redux/userSlice.js";
 import Navbar from "../components/Navbar.jsx";
 import SideBar from "../components/Sidebar.jsx";
 import { FaFolderPlus } from "react-icons/fa6";
+import { setProjects } from "../redux/projectSlice.js";
+import { getProjects, getStarredProjects } from "../apiCalls/project.Api.js";
+import { Folder, Loader2 } from "lucide-react";
+import ProjectCard from "../components/ProjectCard.jsx";
+import CreateProjectModel from "../components/CreateProjectModel.jsx";
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -17,12 +22,20 @@ const Dashboard = () => {
   const userData = useSelector(
     (state) => state.user?.userData
   );
+  // get projects from redux
+  const projects = useSelector(
+    (state) => state.project?.projects
+  );
+  const allStarredProjects = useSelector(
+    (state) => state.project?.Projects
+  );
 
   // Support both nested and direct user responses
   const user = userData?.user ?? userData;
 
   const [activeSession, setActiveSession] = useState("projects");
-
+  const [loadingProjects, setLoadingProjects] = useState(false);
+  const [openModel, setOpenModel] = useState(false);
   // Google Login
   const handleGoogleLogin = async () => {
     if (loading) return;
@@ -50,6 +63,28 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+
+  const fetchAllProjects = async () => {
+    loadingProjects(true);
+    const data = await getProjects();
+    dispatch(setProjects(data));
+    loadingProjects(false);
+  };
+
+  const starredProjects = async () => {
+    loadingProjects(true);
+    const data = await getStarredProjects();
+    dispatch(setProjects(data));
+    loadingProjects(false);
+  }
+
+  useEffect(() => {
+    if(activeSession === "projects") {
+      fetchAllProjects();
+    }else{
+      starredProjects();
+      }
+  }, [activeSession]);
 
   // Login Screen
   if (!user) {
@@ -134,7 +169,9 @@ const Dashboard = () => {
                   Manage your projects and continue building.
                 </p>
               </div>
-              <button className="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2.5 text-[13.5px] font-semibold text-white shadow-sm transition-opacity duration-150 hover:opacity-90 dark:bg-white dark:text-slate-900">
+              <button 
+              onClick={() => setOpenModel(true)}
+              lassName="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2.5 text-[13.5px] font-semibold text-white shadow-sm transition-opacity duration-150 hover:opacity-90 dark:bg-white dark:text-slate-900">
                 <FaFolderPlus size={18} /> 
                 New Project
               </button>
@@ -146,9 +183,34 @@ const Dashboard = () => {
               </h2>
             </div>
 
+            { loadingProjects ? (
+              <div className="flex min-h-[300px] items-center justify-center">
+                <Loader2 size={28} className="animate-spin text-slate-400 dark:text-slate-500" />
+              </div>
+            ) : projects.length === 0 ? (
+              <div className="mb-8 flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white/40 py-16 text-center dark:border-white/[0.1] dark:bg-white/[0.01]">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-900/5 dark:bg-white/10">
+                  <Folder size={48}  className="text-slate-500 dark:text-white" />
+                </div>
+                <h3 className="mb-1.5 text-[16px] font-semibold text-slate-900 dark:text-white">{activeSession == "starred" ? "No Starred Projects" : "No Recent Projects"}</h3>
+                <p className="mb-5 max-w-xs text-[13px] text-slate-500 dark:text-slate-500 ">{activeSession == "starred" ? "You don't have any starred projects yet." : "Create your first project and start building something amazing."}</p>
+              </div>
+            ) : (
+              <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {projects.map((project, index) => (
+                  <ProjectCard key={index} project={project} />
+                ))}
+              </div>
+            )
+            }
+
           </div>
         </div>
       </div>
+      {openModel && (
+        <CreateProjectModel open ={openModel} onClose={() => setOpenModel(false)}/>
+      )}
+      
     </div>
   );
 };
