@@ -65,10 +65,10 @@ const Dashboard = () => {
   };
 
   const fetchAllProjects = async () => {
-    loadingProjects(true);
+    setLoadingProjects(true);
     const data = await getProjects();
     dispatch(setProjects(data));
-    loadingProjects(false);
+    setLoadingProjects(false);
   };
 
   const starredProjects = async () => {
@@ -171,7 +171,7 @@ const Dashboard = () => {
               </div>
               <button 
               onClick={() => setOpenModel(true)}
-              lassName="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2.5 text-[13.5px] font-semibold text-white shadow-sm transition-opacity duration-150 hover:opacity-90 dark:bg-white dark:text-slate-900">
+              className="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2.5 text-[13.5px] font-semibold text-white shadow-sm transition-opacity duration-150 hover:opacity-90 dark:bg-white dark:text-slate-900">
                 <FaFolderPlus size={18} /> 
                 New Project
               </button>

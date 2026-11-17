@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import router from "./routes/project.route.js";
+import projectRouter from "./routes/project.route.js";
 
 
 
@@ -15,7 +15,7 @@ app.use(express.json());
 // Database connection
 connectDB();
 
-app.use("/api/project", router);
+app.use("/", projectRouter );
 
 
 app.get("/", (req, res) => {
