@@ -10,13 +10,31 @@ function CreateProjectModal({ openModal, onClose }) {
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
   const handleCreateProject = async () => {
-    setLoading(true);
-    const data = await createProject({ name, description });
-    onClose();
-    dispatch(addNewProjects(data));
-    setLoading(false);
+    if (!name.trim()) return;
+
+    try {
+      setLoading(true);
+
+      const data = await createProject({
+        name,
+        description,
+      });
+
+      dispatch(addNewProjects(data.project));
+
+      setName("");
+      setDescription("");
+
+      onClose();
+    } catch (error) {
+      console.error("Create Project Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <motion.div
@@ -89,10 +107,11 @@ function CreateProjectModal({ openModal, onClose }) {
             Cancel
           </button>
 
-          <button 
-          onClick={handleCreateProject}
-          className="rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.15)_inset,0_8px_24px_-8px_rgba(0,0,0,0.4)] transition-all hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100">
-            {loading ? "Creating..." : "Create Project" }
+          <button
+            onClick={handleCreateProject}
+            className="rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white shadow-[0_1px_0_rgba(255,255,255,0.15)_inset,0_8px_24px_-8px_rgba(0,0,0,0.4)] transition-all hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-100"
+          >
+            {loading ? "Creating..." : "Create Project"}
           </button>
         </div>
       </motion.div>
