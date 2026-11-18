@@ -127,6 +127,7 @@ export const toggleStar = async (req, res) => {
     await project.save();
     const key = `starred-projects-${userId}`;
     await redis.del(key);
+    await redis.del(`projects-${userId}`);
     return res
       .status(200)
       .json({ message: "project starred successfully", project });

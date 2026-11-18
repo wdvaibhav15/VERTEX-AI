@@ -64,7 +64,7 @@ function SideBar({ activeSession, setActiveSession }) {
         <p className="mb-1 text-[12px] font-medium text-slate-700 dark:text-slate-300">UpGrade Plan</p>
         <p className="mb-3 text-[11.5px] leading-snug text-slate-400 dark:text-slate-500">Upgrade to Pro for more features</p>
         <motion.button
-        whiteHover={{ scale: 1.01 }}
+        whileHover={{ scale: 1.01 }}
         whileTap={{scale:0.97}}
         className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-slate-900 py-2 text-[12.5px] font-semibold text-white shadow-sm transition-opacity duration-150 hover:opacity-90 dark:bg-white dark:text-slate-900"
         >

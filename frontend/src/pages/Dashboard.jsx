@@ -63,20 +63,34 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
-
-  const fetchAllProjects = async () => {
+const fetchAllProjects = async () => {
+  try {
     setLoadingProjects(true);
-    const data = await getProjects();
-    dispatch(setProjects(data));
-    setLoadingProjects(false);
-  };
 
-  const starredProjects = async () => {
-    loadingProjects(true);
-    const data = await getStarredProjects();
-    dispatch(setProjects(data));
-    loadingProjects(false);
+    const data = await getProjects();
+
+    dispatch(setProjects(data.projects || []));
+  } catch (error) {
+    console.error("Fetch Projects Error:", error);
+  } finally {
+    setLoadingProjects(false);
   }
+};
+
+const starredProjects = async () => {
+  try {
+    setLoadingProjects(true);
+
+    const data = await getStarredProjects();
+
+    dispatch(setProjects(data.projects || []));
+  } catch (error) {
+    console.error("Fetch Starred Projects Error:", error);
+  } finally {
+    setLoadingProjects(false);
+  }
+};
+  
 
   useEffect(() => {
     if(activeSession === "projects") {
