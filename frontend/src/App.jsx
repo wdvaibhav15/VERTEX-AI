@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import { useDispatch } from "react-redux";
 import { setUserData } from "./redux/userSlice.js";
 import { me } from "./apiCalls/me.js";
+import ProjectPage from "./pages/ProjectPage.jsx";
 
 const App = () => {
 
@@ -20,6 +21,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/project/:id" element={<ProjectPage />} />
       </Routes>
     </BrowserRouter>
   );

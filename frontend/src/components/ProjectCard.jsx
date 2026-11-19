@@ -4,6 +4,7 @@ import { Star, Trash2 } from "lucide-react";
 import { deleteProject, toggleStar } from "../apiCalls/project.Api.js";
 import { useDispatch } from "react-redux";
 import { setDeleteProject, startProject } from "../redux/projectSlice.js";
+import { useNavigate } from "react-router-dom";
 
 
 function ProjectCard({ project }) {
@@ -11,6 +12,7 @@ function ProjectCard({ project }) {
   const [loadingDelete, setLoadingDelete] = useState(false);
   const dispatch = useDispatch();
   const [ confirmDelete, setConfirmDelete ] = useState(false);
+  const navigate = useNavigate();
   const handleToggleStar = async () => {
     setLoadingStar(true);
     await toggleStar(project?._id);
@@ -31,6 +33,7 @@ function ProjectCard({ project }) {
   }
   return (
     <motion.div
+      onClick={()=>navigate(`/project/${project._id}`)}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 0.97 }}
