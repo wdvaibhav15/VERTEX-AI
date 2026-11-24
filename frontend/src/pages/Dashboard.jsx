@@ -143,7 +143,7 @@ const starredProjects = async () => {
     );
   }
 
-  // Dashboard Screen
+  // Dashboard Screen after login
   return (
     <div className="relative flex h-screen w-full flex-col overflow-hidden bg-slate-50 transition-colors duration-300 dark:bg-[#07070c]">
 
