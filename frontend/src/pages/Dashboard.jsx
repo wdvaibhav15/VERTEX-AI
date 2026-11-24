@@ -66,7 +66,7 @@ const Dashboard = () => {
 const fetchAllProjects = async () => {
   try {
     setLoadingProjects(true);
-
+    // getting project data
     const data = await getProjects();
 
     dispatch(setProjects(data.projects || []));
