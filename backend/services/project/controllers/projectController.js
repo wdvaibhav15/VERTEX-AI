@@ -110,6 +110,7 @@ export const getProjectById = async (req, res) => {
 };
 
 // starred or unstar mark API
+
 export const toggleStar = async (req, res) => {
   try {
     const { id } = req.params;
@@ -136,7 +137,7 @@ export const toggleStar = async (req, res) => {
   }
 };
 
-// delete project API
+// delete project API by id
 export const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
