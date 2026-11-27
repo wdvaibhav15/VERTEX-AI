@@ -110,7 +110,6 @@ export const getProjectById = async (req, res) => {
 };
 
 // starred or unstar mark API
-
 export const toggleStar = async (req, res) => {
   try {
     const { id } = req.params;
