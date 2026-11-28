@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import crypto from "crypto";
 import redis from "../../../shared/redis/redis.js";
 
+// login api
 export const login = async(req, res) => {
     try {
         const { token } =  req.body;
